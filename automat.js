@@ -1,4 +1,10 @@
-//Moja propozycja
+/*
+readme
+That exercise is about making node.js program that use type of drink and how much ml we want for drink machines.
+*/
+
+
+//My take
 const data = process.argv.splice(2);
 const result = data.reduce((acc, item) => {
     const [key, value] = item.split("=");
@@ -14,7 +20,7 @@ console.log(`Przygotowuję ${result.name} o pojemności ${result.size}ml`);
 
 
 
-//Oryginał
+//Original
 /*
 const options = {};
 const arg = process.argv.splice(2).forEach(x => {
