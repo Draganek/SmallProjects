@@ -10,18 +10,20 @@
 // - przygotuj plik JS i wczytaj go w stopce; umieść w nim console.log('Skrypty załadowane') aby mieć pewność, że działa
 // - wstać przynajmniej 1 zdjęcie na stronę
 // - pliki css, js i zdjęcia umieść odpowiedni w folderzach: css, js, img
-const path = require('path');
-const ejsLayouts = require('express-ejs-layouts');
-const { url } = require('inspector');
+
 const express = require('express');
+const path = require('path');
+const ejsLayout = require('express-ejs-layouts');
 const app = express();
 
 // view engine
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname + '/views'));
-// set layout
-app.use(ejsLayouts);
+app.set('views', path.join(__dirname, 'views'));
+// layout 
+app.use(ejsLayout);
 app.set('layout', 'layouts/main');
+// public folder
+app.use(express.static('public'));
 
 const users = [
   { id: 1, name: 'Janek', email: 'janek@gmail.com' },
@@ -31,37 +33,26 @@ const users = [
 ];
 
 app.get('/', (req, res) => {
-  // wyrenderuj stronę główną
-  res.render('pages/home'), {
-    title: 'Strona główna',
-    url: "req.url"
-  }
+  res.render('pages/home');
 });
 
 app.get('/kontakt', (req, res) => {
-  res.render('pages/company'), {
-    title: 'Strona główna',
-    url: req.url
-  }
+  res.render('pages/contact');
 });
 
 app.get('/profile/:id', (req, res) => {
   const { id } = req.params;
   const user = users.find(x => x.id === parseInt(id));
-  res.render('pages/company'), {
-    title: 'Strona główna',
-    url: req.url
-  }
+
   // wyrenderuj profil użytkownika 
   // jeśli nie ma usera wyświetl taką informacje
+  res.render('pages/user', {
+    user
+  });
 });
 
 app.get('*', (req, res) => {
-  res.render('errors/404', { 
-    title: 'Nie znaleziono',
-    layout: 'layouts/minimalistic',
-    url: req.url
-  });
+  res.render('errors/404')
 });
 
 app.listen(3000);
